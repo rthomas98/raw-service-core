@@ -35,6 +35,7 @@ class UserResource extends Resource
                     ->password()
                     ->required()
                     ->maxLength(255),
+
             ]);
     }
 
@@ -46,17 +47,16 @@ class UserResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('email_verified_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                // Get the status from the invitation relationship
+                Tables\Columns\TextColumn::make('status')
+                    ->getStateUsing(fn (User $record) => $record->invitation?->status ?? 'No Invitation')
+                    ->label('Status')
+                    ->colors([
+                        'primary' => 'No Invitation',
+                        'success' => 'Completed',
+                    ])
+                    ->default('No Invitation')
+                    ->badge(),
             ])
             ->filters([
                 //

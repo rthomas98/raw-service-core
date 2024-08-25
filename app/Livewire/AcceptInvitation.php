@@ -69,13 +69,13 @@ class AcceptInvitation extends SimplePage
 
         $user = User::create([
             'name' => $this->form->getState()['name'],
-            'password' => $this->form->getState()['password'],
+            'password' => bcrypt($this->form->getState()['password']),
             'email' => $this->invitationModel->email,
         ]);
 
         auth()->login($user);
 
-        $this->invitationModel->delete();
+        $this->invitationModel->update(['status' => 'Completed']);
 
         $this->redirect(Dashboard::getUrl());
     }

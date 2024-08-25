@@ -12,6 +12,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Mail;
+use Filament\Tables\Actions\Action;
 
 class ListUsers extends ListRecords
 {
@@ -38,6 +39,25 @@ class ListUsers extends ListRecords
                         ->success()
                         ->send();
                 }),
+        ];
+    }
+
+    protected function getTableActions(): array
+    {
+        return [
+            // Resend invite action as a row action
+            Action::make('resendInvite')
+                ->label('Resend Invite')
+                ->action(function (Invitation $record) {
+                    Mail::to($record->email)->send(new TeamInvitationMail($record));
+
+                    Notification::make()
+                        ->title('Invitation resent successfully!')
+                        ->success()
+                        ->send();
+                })
+                ->requiresConfirmation()
+                ->visible(fn (Invitation $record) => $record->status === 'pending'),
         ];
     }
 }
