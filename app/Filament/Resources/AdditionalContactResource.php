@@ -17,7 +17,14 @@ class AdditionalContactResource extends Resource
 {
     protected static ?string $model = AdditionalContact::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user-plus';
+
+    // Navigation Group
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Customers';
+    }
+
 
     public static function form(Form $form): Form
     {

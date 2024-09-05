@@ -17,7 +17,14 @@ class CreditMemoResource extends Resource
 {
     protected static ?string $model = CreditMemo::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-left-right';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Accounting';
+    }
+
+
 
     public static function form(Form $form): Form
     {

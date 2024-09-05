@@ -17,7 +17,12 @@ class TaxCodeResource extends Resource
 {
     protected static ?string $model = TaxCode::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-building-library';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Accounting';
+    }
 
     public static function form(Form $form): Form
     {

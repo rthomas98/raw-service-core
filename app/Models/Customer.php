@@ -32,9 +32,19 @@ class Customer extends Model
         'internal_notes',
     ];
 
+
     public function additionalContacts()
     {
         return $this->hasMany(AdditionalContact::class);
     }
 
+    public function taxCode()
+    {
+        return $this->belongsTo(TaxCode::class);
+    }
+
+    public function paymentTerm()
+    {
+        return $this->belongsTo(PaymentTerm::class);
+    }
 }
