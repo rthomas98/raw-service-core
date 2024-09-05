@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('customer_name');
             $table->string('company_organization')->nullable();
-
+            $table->string('tax_code_id')->nullable();
+            $table->string('payment_term_id')->nullable();
             $table->string('first_name')->nullable();
+            $table->string('emails')->nullable();
             $table->string('last_name')->nullable();
             $table->enum('preferred_billing_communication', ['Email', 'Print']);
             $table->string('phone')->nullable();

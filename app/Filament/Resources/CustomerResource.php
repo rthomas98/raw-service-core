@@ -12,6 +12,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\TagsInput;
+
 
 
 class CustomerResource extends Resource
@@ -60,6 +62,14 @@ class CustomerResource extends Resource
                     ])
                     ->columns(2)
                     ->required(),
+
+                Forms\Components\TagsInput::make('emails')
+                    ->separator(',')
+                    ->splitKeys(['Tab', 'Enter', ',', ' '])
+                    ->placeholder('Enter email addresses')
+                    ->helperText('Press Enter, Tab, or use a comma to separate multiple emails.')
+                    ->validationAttribute('email addresses')
+
                 ]),
 
 

@@ -30,9 +30,17 @@ class AdditionalContactResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('customer_id')
+
+                Forms\Components\Section::make('Additional Contact')
+                ->description('Add the additional contact information below.')
+                ->columns(2)
+                ->schema([
+                Forms\Components\Select::make('customer_id')
+                    ->relationship('customer', 'customer_name')
                     ->required()
-                    ->numeric(),
+                    ->searchable()
+                    ->preload()
+                    ->label('Customer'),
                 Forms\Components\TextInput::make('first_name')
                     ->required()
                     ->maxLength(255),
@@ -46,6 +54,7 @@ class AdditionalContactResource extends Resource
                 Forms\Components\TextInput::make('phone')
                     ->tel()
                     ->maxLength(255),
+                ]),
             ]);
     }
 
