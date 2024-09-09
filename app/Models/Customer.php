@@ -50,4 +50,9 @@ class Customer extends Model
     {
         return $this->belongsTo(PaymentTerm::class);
     }
+
+    public function sites()
+    {
+        return $this->hasMany(Site::class);
+    }
 }

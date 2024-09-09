@@ -10,7 +10,8 @@ class AdditionalContact extends Model
     use HasFactory;
 
     protected $fillable = [
-        'customer_id',
+        'customer_id',   
+        'site_id',
         'first_name',
         'last_name',
         'title',
@@ -21,5 +22,10 @@ class AdditionalContact extends Model
     public function customer()
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    public function site()
+    {
+        return $this->belongsTo(Site::class);
     }
 }

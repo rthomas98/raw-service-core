@@ -13,6 +13,7 @@ class Site extends Model
         'type',
         'site_name',
         'customer_id',
+        'tax_code_id',
         'country',
         'site_address',
         'site_address_2',
@@ -30,4 +31,16 @@ class Site extends Model
     {
         return $this->belongsTo(Customer::class);
     }
+
+    public function additionalContacts()
+    {
+        return $this->hasMany(AdditionalContact::class);
+    }
+
+    public function taxCode()
+    {
+        return $this->belongsTo(TaxCode::class);
+    }
+
+    
 }

@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Database\Eloquent\Model;
 
 class SiteResource extends Resource
 {
@@ -28,6 +29,12 @@ class SiteResource extends Resource
     {
         return $form
             ->schema([
+
+
+                Forms\Components\Section::make('Basic Information')
+                ->description('Add the site information below.')
+                ->columns(2)
+                ->schema([
                 Forms\Components\Select::make('type')
                     ->options([
                         'Commercial' => 'Commercial',
@@ -40,6 +47,14 @@ class SiteResource extends Resource
                 Forms\Components\Select::make('customer_id')
                     ->relationship('customer', 'customer_name')
                     ->required(),
+
+                ]),
+
+                Forms\Components\Section::make('Address')
+                ->description('This is the site address that will appear on jobs, rentals, service tickets, emails and PDFs.')
+                ->columns(2)
+                ->schema([
+
                 Forms\Components\Select::make('country')
                     ->options([
                         'United States' => 'United States',
@@ -58,10 +73,56 @@ class SiteResource extends Resource
                     ->maxLength(255),
                 Forms\Components\Select::make('state_province')
                     ->options([
-                        // Add states/provinces here
-                        'Alaska' => 'Alaska',
                         'Alabama' => 'Alabama',
-                        // Continue with other states/provinces...
+                        'Alaska' => 'Alaska',
+                        'Arizona' => 'Arizona',
+                        'Arkansas' => 'Arkansas',
+                        'California' => 'California',
+                        'Colorado' => 'Colorado',
+                        'Connecticut' => 'Connecticut',
+                        'Delaware' => 'Delaware',
+                        'Florida' => 'Florida',
+                        'Georgia' => 'Georgia',
+                        'Hawaii' => 'Hawaii',
+                        'Idaho' => 'Idaho',
+                        'Illinois' => 'Illinois',
+                        'Indiana' => 'Indiana',
+                        'Iowa' => 'Iowa',
+                        'Kansas' => 'Kansas',
+                        'Kentucky' => 'Kentucky',
+                        'Louisiana' => 'Louisiana',
+                        'Maine' => 'Maine',
+                        'Maryland' => 'Maryland',
+                        'Massachusetts' => 'Massachusetts',
+                        'Michigan' => 'Michigan',
+                        'Minnesota' => 'Minnesota',
+                        'Mississippi' => 'Mississippi',
+                        'Missouri' => 'Missouri',
+                        'Montana' => 'Montana',
+                        'Nebraska' => 'Nebraska',
+                        'Nevada' => 'Nevada',
+                        'New Hampshire' => 'New Hampshire',
+                        'New Jersey' => 'New Jersey',
+                        'New Mexico' => 'New Mexico',
+                        'New York' => 'New York',
+                        'North Carolina' => 'North Carolina',
+                        'North Dakota' => 'North Dakota',
+                        'Ohio' => 'Ohio',
+                        'Oklahoma' => 'Oklahoma',
+                        'Oregon' => 'Oregon',
+                        'Pennsylvania' => 'Pennsylvania',
+                        'Rhode Island' => 'Rhode Island',
+                        'South Carolina' => 'South Carolina',
+                        'South Dakota' => 'South Dakota',
+                        'Tennessee' => 'Tennessee',
+                        'Texas' => 'Texas',
+                        'Utah' => 'Utah',
+                        'Vermont' => 'Vermont',
+                        'Virginia' => 'Virginia',
+                        'Washington' => 'Washington',
+                        'West Virginia' => 'West Virginia',
+                        'Wisconsin' => 'Wisconsin',
+                        'Wyoming' => 'Wyoming'
                     ])
                     ->required(),
                 Forms\Components\TextInput::make('zip_postal_code')
@@ -69,14 +130,67 @@ class SiteResource extends Resource
                     ->maxLength(20),
                 Forms\Components\TextInput::make('county')
                     ->maxLength(255),
+                    ]),
+
+                    Forms\Components\Section::make('Billing')
+                    ->columns(2)
+                    ->schema([
+                        Forms\Components\Select::make('tax_code_id')
+                            ->label('Tax Code')
+                            ->relationship('taxCode', 'tax_code_name')
+                            ->searchable()
+                            ->preload()
+                            ->createOptionForm([
+                                Forms\Components\TextInput::make('tax_code_name')
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\Toggle::make('default_tax_code')
+                                    ->label('Set as Default Tax Code'),
+                            ])
+                            ->required()
+                            ->afterStateUpdated(function ($state, callable $set) {
+                                $taxCode = \App\Models\TaxCode::find($state);
+                                if ($taxCode) {
+                                    $set('total_tax_rate', $taxCode->total_tax_rate);
+                                }
+                            }),
+                        Forms\Components\TextInput::make('total_tax_rate')
+                            ->label('Total Tax Rate')
+                            ->disabled()
+                            ->dehydrated(false),
+                    ]),
+
+Forms\Components\Section::make('Location')
+                ->description('Latitude and longitude coordinates are used for routing and directions. To use the site address to calculate coordinates, click the button below:')
+                ->columns(2)
+                ->schema([
+
                 Forms\Components\TextInput::make('latitude')
                     ->numeric()
                     ->maxLength(10),
                 Forms\Components\TextInput::make('longitude')
                     ->numeric()
                     ->maxLength(10),
-                Forms\Components\Textarea::make('notes'),
-                Forms\Components\Textarea::make('internal_notes'),
+            
+                ]),
+
+                Forms\Components\Section::make('Notes (optional)')
+                ->description('Add any additional notes about the site here.')
+                ->columns(2)
+                ->schema([
+                    Forms\Components\RichEditor::make('notes')
+                    ->columnSpanFull(),
+                ]),
+
+                Forms\Components\Section::make('Internal Notes (optional)')
+                ->description('Add any internal notes about the site here.')
+                ->columns(2)
+                ->schema([
+                    Forms\Components\RichEditor::make('internal_notes')
+                    ->columnSpanFull(),
+                ]),
+                
+
             ]);
     }
 
