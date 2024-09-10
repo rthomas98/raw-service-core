@@ -28,9 +28,14 @@ class CategoryResource extends Resource
     {
         return $form
             ->schema([
+
+                Forms\Components\Section::make('Category')
+                ->description('Add a new category to the inventory.')
+                ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
+                ]),
             ]);
     }
 

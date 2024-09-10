@@ -28,9 +28,14 @@ class ItemClassResource extends Resource
     {
         return $form
             ->schema([
+
+                Forms\Components\Section::make('Item Class')
+                ->description('Add a new item class to the inventory.')
+                ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
+                ]),
             ]);
     }
 

@@ -13,10 +13,21 @@ class Service extends Model
         'name',
         'description',
         'short_code',
+        'tax_code_id',
         'is_taxable',
         'is_surcharge',
         'billing_period',
         'rate',
         'notes',
     ];
+
+    public function taxCode()
+    {
+        return $this->belongsTo(TaxCode::class);
+    }
+
+    public function estimates()
+    {
+        return $this->hasMany(Estimate::class);
+    }
 }

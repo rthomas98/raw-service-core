@@ -28,6 +28,10 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\Section::make('Product')
+                ->description('Add a new product to the inventory.')
+                ->columns(2)
+                ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
@@ -37,15 +41,24 @@ class ProductResource extends Resource
                 Forms\Components\TextInput::make('size')
                     ->maxLength(255)
                     ->label('Size (optional)'),
-                Forms\Components\Checkbox::make('is_itemized')
-                    ->label('Itemized Product?'),
+                Forms\Components\Toggle::make('is_itemized')
+                    ->label('Itemized Product?')
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        if (!$state) {
+                            $set('quantity', null);
+                        }
+                    }),
                 Forms\Components\TextInput::make('quantity')
                     ->required()
                     ->numeric()
-                    ->minValue(0),
-                Forms\Components\Textarea::make('description')
+                    ->minValue(0)
+                    ->visible(fn ($get) => $get('is_itemized')),
+                Forms\Components\RichEditor::make('description')
                     ->label('Description (optional)')
+                    ->columnSpanFull()
                     ->maxLength(65535),
+                ]),
             ]);
     }
 

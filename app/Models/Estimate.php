@@ -27,6 +27,8 @@ class Estimate extends Model
         'attachments',
         'preferred_communication',
         'online_payment',
+        'tax_code_id',
+        'service_id',
     ];
 
     public function customer()
@@ -37,5 +39,10 @@ class Estimate extends Model
     public function clerk()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function services()
+    {
+        return $this->hasMany(Service::class);
     }
 }
